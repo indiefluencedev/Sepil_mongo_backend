@@ -12,6 +12,6 @@ router.post('/login', loginAdmin);
 router.post('/register', registerAdmin);
 router.post('/registeruser',registeruser);
 router.post('/createproduct',upload.single('image'), createProduct);
-router.get("/products", getProductById)
+router.get('/products/:productId', getProductById)
 
 module.exports = router;

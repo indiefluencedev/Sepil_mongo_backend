@@ -31,20 +31,30 @@ const createProduct = async function (req, res) {
     }
 }
 
-const getProductById = async function(req, res) {
+// Function to get product by ID
+const getProductById = async (req, res) => {
     try {
-        let productId = req.params.productId
-        if(!productId)  return res.status(400).send({ status: false, message: "ProductId is required" })
-        if (!isValid(productId)) return res.status(400).send({ status: false, message: "Incorrect productId" })
-        if (!productId.match(objectid)) return res.status(400).send({ status: false, message: "Incorrect productId" })
+        const productId = req.params.productId;
 
-        let product = await productModel.findById(productId)
-        if(!product || product.isDeleted == true)    return res.status(404).send({ status: false, message: "Product not found" })
+        // Validate the product ID format
+        // if (!mongoose.Types.ObjectId.isValid(productId)) {
+        //     return res.status(400).send({ status: false, message: "Invalid product ID format" });
+        // }
 
-        return res.status(200).send({ status: true,message: 'Success', data: product })
-    } catch (err) {
-        return res.status(500).send({ status: false, message: err.message })
+        // Find the product by ID
+        const product = await productModel.findById(productId);
+
+        // Check if the product exists or is deleted
+        if (!product || product.isDeleted) {
+            return res.status(404).send({ status: false, message: "Product not found" });
+        }
+
+        // Respond with the product data
+        return res.status(200).send({ status: true, message: 'Product fetched successfully', data: product });
+    } catch (error) {
+        return res.status(500).send({ status: false, message: error.message });
     }
-}
+};
+
 
 module.exports = { createProduct , getProductById }
