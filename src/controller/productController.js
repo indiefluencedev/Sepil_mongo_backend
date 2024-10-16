@@ -1,51 +1,50 @@
 const productModel = require("../models/productModel");
-const {isValid} = require("../validator/validator");
+const { isValid } = require("../validator/validator");
 
-const createProduct = async function (req, res) {
-    try {
-        const data = req.body;
-        console.log(data);
-        let { name, description, price } = data;
-        if (name) {
-            if (!isValid(name)) return res.status(400).send({ status: false, message: "Name is in incorrect format" })
-            let isUniqueName = await productModel.findOne({ name: name });
-            if (isUniqueName) {
-                return res.status(400).send({ status: false, message: "This Name is being used already" })
-            }
-        } else return res.status(400).send({ status: false, message: "Name must be present" })
+// Function to create a new product
+const Product = require('../models/productModel');
 
-        if (description) {
-            if (!isValid(description)) return res.status(400).send({ status: false, message: "description is in incorrect format" })
-        } else return res.status(400).send({ status: false, message: "description must be present" })
+const createProduct = async (req, res) => {
+  try {
+    const { name, price, description } = req.body;
+    console.log('Received body:', req.body);
+    console.log('Received file:', req.file);
 
-        //price validation
-        if (!price || price == 0) return res.status(400).send({ status: false, message: "price cannot be empty" })
-        if (!Number(price)) return res.status(400).send({ status: false, message: "price should be in valid number/decimal format" })
-        data.price = Number(price).toFixed(2)
-
-        const createdProduct = await productModel.create(data)
-
-        return res.status(201).send({ status: true, message: 'Success', data: createdProduct })
-    } catch (err) {
-        return res.status(500).send({ status: false, message: err.message })
+    if (!req.file) {
+      return res.status(400).json({ error: 'Image file is required' });
     }
-}
+
+    const newProduct = {
+      name,
+      price,
+      description,
+      image: req.file.filename,
+    };
+
+    const product = await Product.create(newProduct);
+    res.status(201).json({
+      message: 'Product created successfully!',
+      product,
+    });
+  } catch (error) {
+    console.error('Error in createProduct:', error);
+    res.status(500).json({ error: error.message || 'Failed to create product' });
+  }
+};
+
+  
 
 // Function to get product by ID
 const getProductById = async (req, res) => {
     try {
         const productId = req.params.productId;
 
-        // Validate the product ID format
-        // if (!mongoose.Types.ObjectId.isValid(productId)) {
-        //     return res.status(400).send({ status: false, message: "Invalid product ID format" });
-        // }
-
         // Find the product by ID
         const product = await productModel.findById(productId);
+        console.log(product);
 
-        // Check if the product exists or is deleted
-        if (!product || product.isDeleted) {
+        // Check if the product exists
+        if (!product) {
             return res.status(404).send({ status: false, message: "Product not found" });
         }
 
@@ -56,5 +55,4 @@ const getProductById = async (req, res) => {
     }
 };
 
-
-module.exports = { createProduct , getProductById }
+module.exports = { createProduct, getProductById };

@@ -1,17 +1,27 @@
-// routes/authRoutes.js
 const express = require('express');
+const path = require('path');
 const router = express.Router();
-const { loginAdmin, registerAdmin } = require('../controller/AdminController'); 
-const  {registeruser} = require('../controller/userController'); 
-const  {createProduct} = require('../controller/productController'); 
-const  {getProductById} = require('../controller/productController'); 
-const upload = require('../middleware/multerconfig');
+const upload = require('../middleware/uploads');
+const multer = require('multer');
 
-// ----------------------------------------------- login route----------------------------------------------------------------//
+// Importing controllers
+const { loginAdmin, registerAdmin } = require('../controller/AdminController');
+const { createProduct, getProductById } = require('../controller/productController');
+
+
+
+// Routes for authentication and user registration
 router.post('/login', loginAdmin);
 router.post('/register', registerAdmin);
-router.post('/registeruser',registeruser);
-router.post('/createproduct',upload.single('image'), createProduct);
-router.get('/products/:productId', getProductById)
 
+
+
+// Route for fetching a product by its ID
+router.get('/products/:productId', getProductById);
+
+// -------------------testinggg--------------
+
+
+router.post('/createproduct', upload.array('image', 1), createProduct);
+  
 module.exports = router;
