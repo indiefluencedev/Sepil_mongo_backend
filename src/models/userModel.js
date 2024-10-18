@@ -1,13 +1,8 @@
 const  mongoose  = require("mongoose");
 
 const userSchema = new mongoose.Schema({
-    fname : {
+    name : {
         type:String, 
-        required:true,
-        trim:true
-    },
-    lname : {
-        type:String,
         required:true,
         trim:true
     },
@@ -27,19 +22,14 @@ const userSchema = new mongoose.Schema({
         type:String,
         required:true
     },
-    address : { 
-      shipping : {
-             street: {type:String, required:true},
-             city: {type:String, required:true},
-             pincode: {type:String, required:true}
-                 },
-      billing : {
-                street: {type:String, required:true},
-                city: {type:String, required:true},
-                pincode: {type:String, required:true}
-                },
+     isVerified:{
+        type:Boolean,
+         default:false
+    }, 
+    isAdmin:{
+        type:Boolean,
+        default: false
     }
-
-},{ timestamps: true })
+},{timestamps: true })
 
 module.exports = mongoose.model("user", userSchema)
