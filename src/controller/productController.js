@@ -41,4 +41,14 @@ const getProductById = async (req, res) => {
     }
 };
 
-module.exports = { createProduct, getProductById };
+const getProducts = async (req, res) => {
+  try {
+    const products = await productModel.find(); 
+    res.status(200).send({ success: true, data: products });
+  } catch (error) {
+    res.status(500).send({ success: false, message: error.message });
+  }
+};
+
+
+module.exports = { createProduct, getProductById, getProducts };
