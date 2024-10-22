@@ -29,7 +29,15 @@ const userSchema = new mongoose.Schema({
     isAdmin:{
         type:Boolean,
         default: false
-    }
+    },
+    otp: {
+        type: String,
+        
+    },
+    otpExpiry: {
+        type: Date,
+    
+    },
 },{timestamps: true })
 
 module.exports = mongoose.model("user", userSchema)
