@@ -16,4 +16,4 @@ router.post('/verify-otp', sendOTPEmail);
 // router.post("/resend-otp", resendOtp);
 
 
-module.exports = router;
+module.exports = router; 

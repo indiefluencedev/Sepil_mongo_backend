@@ -1,4 +1,6 @@
 const nodemailer = require('nodemailer');
+const User = require("../models/userModel");
+
 
 const generateOTP = () => {
     return Math.floor(100000 + Math.random() * 900000).toString();
@@ -6,6 +8,11 @@ const generateOTP = () => {
 
 
 const sendOTPEmail = async (email, otp) => {
+    console.log(email)
+    console.log(otp)
+    if (!email) {
+        throw new Error('Recipient email is not defined');
+      }
     const transporter = nodemailer.createTransport({
         service: 'Gmail',
         auth: {
@@ -26,9 +33,12 @@ const sendOTPEmail = async (email, otp) => {
 const verifyOTP = async (req, res) => {
     try {
         const { email, otp } = req.body;
+        console.log(email)
+        console.log(otp)
 
         // Find the user by email
         const user = await User.findOne({ email });
+        console.log(user)
 
         if (!user) {
             return res.status(400).json({ message: 'User not found.' });
@@ -58,3 +68,6 @@ const verifyOTP = async (req, res) => {
 };
 
 module.exports = {generateOTP,sendOTPEmail,verifyOTP};
+
+
+ 
