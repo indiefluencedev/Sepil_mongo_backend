@@ -1,6 +1,6 @@
 const express = require("express");
 const { createUser, loginUser,getAllUsers } = require("../controller/userController");
-const { generateOTP,sendOTPEmail } = require("../controller/verifyotp");
+const {verifyOTP } = require("../controller/verifyotp");
 const { createProduct, getProductById,getProducts } = require("../controller/productController");
 
 const router = express.Router();
@@ -12,7 +12,7 @@ router.post("/login", loginUser);
 router.post("/createproduct",createProduct)
 router.get("/products", getProducts);
 router.get("/product/:id", getProductById);
-router.post('/verify-otp', sendOTPEmail);
+router.post('/verifyotp', verifyOTP);
 // router.post("/resend-otp", resendOtp);
 
 

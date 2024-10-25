@@ -1,44 +1,52 @@
 const nodemailer = require('nodemailer');
 const User = require("../models/userModel");
 
-
 const generateOTP = () => {
     return Math.floor(100000 + Math.random() * 900000).toString();
 };
 
 
 const sendOTPEmail = async (email, otp) => {
-    console.log(email)
-    console.log(otp)
-    if (!email) {
-        throw new Error('Recipient email is not defined');
-      }
-    const transporter = nodemailer.createTransport({
-        service: 'Gmail',
-        auth: {
-            user: process.env.EMAIL_USER,
-            pass: process.env.EMAIL_PASS
-        },
-    });
+    try {
+        console.log('Email:', email);
+        console.log('OTP:', otp);
 
-    const mailOptions = {
-        from: process.env.EMAIL_USER,
-        to: email,
-        subject: 'Your OTP Code',
-        text: `Your OTP code is ${otp}. It is valid for 2 minutes.`,
-    };
+        if (!email) {
+            throw new Error('Recipient email is not defined');
+        }
 
-    await transporter.sendMail(mailOptions);
+        const transporter = nodemailer.createTransport({
+            service: 'Gmail',
+            auth: {
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS
+            },
+        });
+
+        const mailOptions = {
+            from: process.env.EMAIL_USER,
+            to: email,
+            subject: 'Your OTP Code',
+            text: `Your OTP code is ${otp}. It is valid for 2 minutes.`,
+        };
+
+        await transporter.sendMail(mailOptions);
+        console.log('OTP email sent successfully');
+    } catch (error) {
+        console.error('Error sending OTP email:', error);
+        throw error; // Rethrow the error to be caught in the calling function
+    }
 };
+
 const verifyOTP = async (req, res) => {
     try {
         const { email, otp } = req.body;
-        console.log(email)
-        console.log(otp)
+       
 
         // Find the user by email
-        const user = await User.findOne({ email });
-        console.log(user)
+        const user = await User.findOne({ otp });
+        console.log('verify user' + user)
+        console.log('verify user' + otp)
 
         if (!user) {
             return res.status(400).json({ message: 'User not found.' });
@@ -62,7 +70,7 @@ const verifyOTP = async (req, res) => {
 
         res.status(200).json({ message: 'User verified successfully.' });
     } catch (error) {
-        console.error('Error verifying OTP:', error);
+        console.error('Error verifying OTP:', error.message);
         res.status(500).json({ message: 'Error verifying OTP', error: error.message });
     }
 };
@@ -70,4 +78,4 @@ const verifyOTP = async (req, res) => {
 module.exports = {generateOTP,sendOTPEmail,verifyOTP};
 
 
- 
+  
