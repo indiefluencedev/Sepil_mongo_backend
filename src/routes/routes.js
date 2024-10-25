@@ -1,6 +1,6 @@
 const express = require("express");
 const { createUser, loginUser,getAllUsers } = require("../controller/userController");
-const {verifyOTP } = require("../controller/verifyotp");
+const {verifyOTP,resendOTP } = require("../controller/verifyotp");
 const { createProduct, getProductById,getProducts } = require("../controller/productController");
 
 const router = express.Router();
@@ -13,7 +13,7 @@ router.post("/createproduct",createProduct)
 router.get("/products", getProducts);
 router.get("/product/:id", getProductById);
 router.post('/verifyotp', verifyOTP);
-// router.post("/resend-otp", resendOtp);
+router.post("/resendotp", resendOTP);
 
 
 module.exports = router; 
