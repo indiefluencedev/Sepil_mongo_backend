@@ -58,6 +58,7 @@ const loginUser = async (req, res) => {
     try {
         // Find user by email
         const user = await User.findOne({ email });
+
  
         if (!user) {
             return res.status(404).json({ message: 'User not found!' });
@@ -82,6 +83,8 @@ const loginUser = async (req, res) => {
                 user: {
                     name: user.name,
                     role: 'admin',
+                    email:user.email,
+                    phone: user.phone
                 },
             });
         } else {
@@ -90,6 +93,8 @@ const loginUser = async (req, res) => {
                 user: {
                     name: user.name,
                     role: 'user',
+                    email:user.email,
+                    phone: user.phone
                 },
             });
         }
