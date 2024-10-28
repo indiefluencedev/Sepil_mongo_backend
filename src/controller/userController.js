@@ -5,7 +5,7 @@ const {generateOTP,sendOTPEmail} = require("./verifyotp")
 
 const createUser = async (req, res) => {
     try {
-        const { name, email, phone, password, isAdmin,isVerified } = req.body;
+        const { name, email, phone, password, isAdmin, isVerified } = req.body;
 
         // Validate required fields
         if (!name || !email || !phone || !password) {
@@ -17,10 +17,7 @@ const createUser = async (req, res) => {
         if (existingUser) {
             return res.status(400).json({ message: 'User with this email already exists.' });
         }
-        // if (existingUser.phone == phone) {
-        //     return res.status(400).json({ message: 'User with this Number already exists.' });
-        // }
-        // Hash the password
+        
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Generate OTP
@@ -33,11 +30,10 @@ const createUser = async (req, res) => {
             phone,
             password: hashedPassword,
             isAdmin: isAdmin || false, 
-            isVerified: false, // Initially set to false
+            isVerified: false,
             otp,
             otpExpiry,
         });
-        console.log(newUser)
 
         await newUser.save();
 
@@ -45,9 +41,8 @@ const createUser = async (req, res) => {
         await sendOTPEmail(email, otp);
         console.log(email)
         
-
         res.status(201).json({
-            message: 'User created successfully. Please verify your email using the OTP sent.',
+            message: 'User created successfully..',
         });
     } catch (error) {
         console.error('Error creating user:', error); 

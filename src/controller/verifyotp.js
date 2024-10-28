@@ -1,7 +1,6 @@
 const nodemailer = require('nodemailer');
 const User = require("../models/userModel");
 
-// Generate a 6-digit OTP
 const generateOTP = () => {
     return Math.floor(100000 + Math.random() * 900000).toString();
 };
@@ -9,8 +8,6 @@ const generateOTP = () => {
 // Send OTP email
 const sendOTPEmail = async (email, otp) => {
     try {
-        console.log('Email:', email);
-        console.log('OTP:', otp);
 
         if (!email) {
             throw new Error('Recipient email is not defined');
@@ -35,7 +32,7 @@ const sendOTPEmail = async (email, otp) => {
         console.log('OTP email sent successfully');
     } catch (error) {
         console.error('Error sending OTP email:', error);
-        throw error; // Rethrow the error to be caught in the calling function
+        throw error; 
     }
 };
 
@@ -43,6 +40,8 @@ const sendOTPEmail = async (email, otp) => {
 const verifyOTP = async (req, res) => {
     try {
         const { email, otp } = req.body;
+        console.log( email)
+        console.log( otp)
 
         const user = await User.findOne({ email });
 
@@ -86,6 +85,8 @@ const resendOTP = async (req, res) => {
 
         const otp = generateOTP();
         const otpExpiry = new Date(Date.now() + 2 * 60 * 1000); // OTP valid for 2 minutes
+        console.log( otp)
+        console.log( otpExpiry)
 
         user.otp = otp;
         user.otpExpiry = otpExpiry;
