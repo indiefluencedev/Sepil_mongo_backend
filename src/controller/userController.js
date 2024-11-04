@@ -134,6 +134,36 @@ const getAllUsers = async (req, res) => {
     }
 };
 
+const updateUserProfile = async (req, res) => {
+  const { email, password, name, address, mobileNo } = req.body;
+
+  try {
+    // Find the user by email
+    const user = await userModel.findOne({ email });
+    
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    // Check if the provided password matches the hashed password
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(401).json({ success: false, message: 'Incorrect password' });
+    }
+
+    // Update user details
+    user.name = name || user.name;
+    user.address = address || user.address;
+    user.mobileNo = mobileNo || user.mobileNo;
+
+    // Save the updated user information
+    await user.save();
+
+    res.status(200).json({ success: true, message: 'Profile updated successfully', user });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Error updating profile', error: error.message });
+  }
+};
 
 
-module.exports = { createUser, loginUser , getAllUsers };
+module.exports = { createUser, loginUser , getAllUsers,updateUserProfile };

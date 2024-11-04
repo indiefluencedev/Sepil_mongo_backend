@@ -1,7 +1,7 @@
 const express = require("express");
-const { createUser, loginUser,getAllUsers } = require("../controller/userController");
+const { createUser, loginUser,getAllUsers,updateUserProfile} = require("../controller/userController");
 const {verifyOTP,resendOTP } = require("../controller/verifyotp");
-const { createProduct, getProductById,getProducts,deleteProduct} = require("../controller/productController");
+const { createProduct, getProductById,getProducts,deleteProduct,updateProduct} = require("../controller/productController");
 const cartController = require('../controller/cartController');
 
 
@@ -17,6 +17,7 @@ router.get("/product/:id", getProductById);
 router.post('/verifyotp', verifyOTP);
 router.post("/resendotp", resendOTP);
 router.post('/add-to-cart', cartController.addToCart);
-router.delete('/delete/:productId', deleteProduct);
+router.delete('/delete/:id', deleteProduct);
+router.put('/update-profile', updateUserProfile);
 
 module.exports = router; 
