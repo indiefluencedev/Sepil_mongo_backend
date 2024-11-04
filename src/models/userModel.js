@@ -25,9 +25,9 @@ const userSchema = new mongoose.Schema({
     address : { 
         shipping : {
                HouseNo: {type:String},
-               State:{type:string},
+               State:{type:String},
                city: {type:String},
-               LandMark:{type:string},
+               LandMark:{type:String},
                pincode: {type:String}
                    }
                 },
