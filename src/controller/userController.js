@@ -135,7 +135,7 @@ const getAllUsers = async (req, res) => {
 };
 
 const updateUserProfile = async (req, res) => {
-    const { email, name, mobileNo, address } = req.body;
+    const { email, name, phone, address } = req.body;
     const { HouseNo, State, city, LandMark, pincode } = address?.shipping || {};
   
     try {
@@ -148,7 +148,7 @@ const updateUserProfile = async (req, res) => {
   
       // Update basic user details
       if (name) user.name = name;
-      if (mobileNo) user.mobileNo = mobileNo;
+      if (phone) user.phone = phone;
   
       // Update nested address fields if they are provided
       if (HouseNo) user.address.shipping.HouseNo = HouseNo;
