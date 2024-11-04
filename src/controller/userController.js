@@ -140,7 +140,7 @@ const updateUserProfile = async (req, res) => {
   
     try {
       // Find the user by email
-      const user = await userModel.findOne({ email });
+      const user = await User.findOne({ email });
       
       if (!user) {
         return res.status(404).json({ success: false, message: 'User not found' });
@@ -167,4 +167,4 @@ const updateUserProfile = async (req, res) => {
   };
   
 
-module.exports = { createUser, loginUser , getAllUsers,updateUserProfile };
+module.exports = { createUser, loginUser , getAllUsers, updateUserProfile };
