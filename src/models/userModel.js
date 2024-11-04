@@ -22,6 +22,15 @@ const userSchema = new mongoose.Schema({
         type:String,
         required:true
     },
+    address : { 
+        shipping : {
+               HouseNo: {type:String},
+               State:{type:string},
+               city: {type:String},
+               LandMark:{type:string},
+               pincode: {type:String}
+                   }
+                },
      isVerified:{
         type:Boolean,
          default:false

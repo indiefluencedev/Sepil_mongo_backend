@@ -135,21 +135,27 @@ const getAllUsers = async (req, res) => {
 };
 
 const updateUserProfile = async (req, res) => {
-    const { email } = req.body;
-    const { name, address, mobileNo } = req.body;
+    const { email, name, mobileNo, address } = req.body;
+    const { HouseNo, State, city, LandMark, pincode } = address?.shipping || {};
   
     try {
       // Find the user by email
-      const user = await User.findOne({ email });
+      const user = await userModel.findOne({ email });
       
       if (!user) {
         return res.status(404).json({ success: false, message: 'User not found' });
       }
   
-      // Update user details
-      user.name = name || user.name;
-      user.address = address || user.address;
-      user.mobileNo = mobileNo || user.mobileNo;
+      // Update basic user details
+      if (name) user.name = name;
+      if (mobileNo) user.mobileNo = mobileNo;
+  
+      // Update nested address fields if they are provided
+      if (HouseNo) user.address.shipping.HouseNo = HouseNo;
+      if (State) user.address.shipping.State = State;
+      if (city) user.address.shipping.city = city;
+      if (LandMark) user.address.shipping.LandMark = LandMark;
+      if (pincode) user.address.shipping.pincode = pincode;
   
       // Save the updated user information
       await user.save();
@@ -159,5 +165,6 @@ const updateUserProfile = async (req, res) => {
       res.status(500).json({ success: false, message: 'Error updating profile', error: error.message });
     }
   };
+  
 
 module.exports = { createUser, loginUser , getAllUsers,updateUserProfile };
