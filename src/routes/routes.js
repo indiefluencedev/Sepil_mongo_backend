@@ -19,5 +19,5 @@ router.post("/resendotp", resendOTP);
 router.post('/add-to-cart', cartController.addToCart);
 router.delete('/delete/:id', deleteProduct);
 router.put('/update-profile', updateUserProfile);
-
+router.put('/update-product/:id', updateProduct);
 module.exports = router; 
