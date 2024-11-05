@@ -84,7 +84,8 @@ const loginUser = async (req, res) => {
                     name: user.name,
                     role: 'admin',
                     email:user.email,
-                    phone: user.phone
+                    phone: user.phone,
+                    address:user.address
                 },
             });
         } else {
@@ -94,7 +95,8 @@ const loginUser = async (req, res) => {
                     name: user.name,
                     role: 'user',
                     email:user.email,
-                    phone: user.phone
+                    phone: user.phone,
+                    address:user.address
                 },
             });
         }
@@ -136,7 +138,7 @@ const getAllUsers = async (req, res) => {
 
 const updateUserProfile = async (req, res) => {
     const { email, name, phone, address } = req.body;
-    const { HouseNo, State, city, LandMark, pincode } = address?.shipping || {};
+    const { houseNo, state, city, landMark, pincode } = address || {};
   
     try {
       // Find the user by email
@@ -151,11 +153,11 @@ const updateUserProfile = async (req, res) => {
       if (phone) user.phone = phone;
   
       // Update nested address fields if they are provided
-      if (HouseNo) user.address.shipping.HouseNo = HouseNo;
-      if (State) user.address.shipping.State = State;
-      if (city) user.address.shipping.city = city;
-      if (LandMark) user.address.shipping.LandMark = LandMark;
-      if (pincode) user.address.shipping.pincode = pincode;
+      if (houseNo) user.address.houseNo = houseNo;
+      if (state) user.address.state = state;
+      if (city) user.address.city = city;
+      if (landMark) user.address.landMark = landMark;
+      if (pincode) user.address.pincode = pincode;
   
       // Save the updated user information
       await user.save();
