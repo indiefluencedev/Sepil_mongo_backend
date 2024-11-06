@@ -1,33 +1,31 @@
 const express = require('express');
 const app = express();
-  const dotenv = require('dotenv');
+const dotenv = require('dotenv');
 const route = require('./src/routes/routes'); 
 const connectDB = require('./config/db'); 
-const multer = require("multer")
+const multer = require("multer");
 const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
-const productRoutes = require('./src/routes/routes');
 
-const uploadDir = path.join(__dirname, '../uploads');
+// Set up uploads directory
+const uploadDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir);
+    fs.mkdirSync(uploadDir);
 }
 
 dotenv.config(); 
 
-// Middleware to parse JSON bodies
+// Middleware
 app.use(express.json());
-// app.use(express.urlencoded({ extended: true })); 
-app.use('/uploads', express.static('uploads'));
-// app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Serve uploaded images
-app.use(multer().any());
+app.use('/uploads', express.static(uploadDir)); 
 app.use(cors());
+
+// Connect to Database
 connectDB();
+
 // Use routes
 app.use('/', route); 
-
-
 
 // Start the server
 const PORT = process.env.PORT || 5000;

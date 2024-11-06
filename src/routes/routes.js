@@ -3,6 +3,7 @@ const { createUser, loginUser,getAllUsers,updateUserProfile} = require("../contr
 const {verifyOTP,resendOTP } = require("../controller/verifyotp");
 const { createProduct, getProductById,getProducts,deleteProduct,updateProduct} = require("../controller/productController");
 const cartController = require('../controller/cartController');
+const upload = require('../middleware/uploads');
 
 
 const router = express.Router();
@@ -11,7 +12,7 @@ const router = express.Router();
 router.get("/user",getAllUsers);
 router.post("/register", createUser);
 router.post("/login", loginUser);
-router.post("/createproduct",createProduct)
+router.post("/createproduct",upload,createProduct)
 router.get("/products", getProducts);
 router.get("/product/:id", getProductById);
 router.post('/verifyotp', verifyOTP);

@@ -2,21 +2,28 @@ const productModel = require("../models/productModel");
 
 const createProduct = async (req, res) => {
   try {
-    const data = req.body;
-    const { name, price, description }= data
+    const { name, price, description } = req.body;
+    const image = req.file ? `/uploads/${req.file.filename}` : null;
     console.log(req.body)
+    console.log(image)
 
-
-    // Create a new product object
-    const newProduct = await productModel.create(data)
-    res.status(201).json({
-      message: 'Product created successfully!',
-      product: data,
+    // Create a new product instance using productModel
+    const product = new productModel({
+      name,
+      description,
+      price,
+      image
     });
+    console.log(product)
+
+    // Save the product to the database
+    await product.save();
+    res.status(201).json({ message: "Product created successfully", product });
   } catch (error) {
     res.status(500).json({ error: error.message || 'Failed to create product' });
   }
 };
+
 
 
 // Function to get product by ID
