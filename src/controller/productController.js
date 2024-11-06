@@ -76,9 +76,16 @@ const updateProduct = async (req, res) => {
   const { name, price, description } = req.body;
 
   try {
+    // Check if there's a new file (image) uploaded
+    let updatedData = { name, price, description };
+    if (req.file) {
+      // If a new image is uploaded, update the image path
+      updatedData.image = `/uploads/${req.file.filename}`;
+    }
+
     const product = await productModel.findByIdAndUpdate(
       id,
-      { name, price, description },
+      updatedData,
       { new: true, runValidators: true }  
     );
 
@@ -91,5 +98,6 @@ const updateProduct = async (req, res) => {
     res.status(500).json({ success: false, message: 'Error updating product', error: error.message });
   }
 };
+
 
 module.exports = { createProduct, getProductById, getProducts,deleteProduct,updateProduct };
