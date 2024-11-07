@@ -1,7 +1,7 @@
 const Cart = require('../models/cartModel');
 
 const addToCart = async (req, res) => {
-    const { userId, products } = req.body;  // Destructure userId and products from the request body
+    const { userId, products } = req.body; 
   
     if (!userId || !products || products.length === 0) {
       return res.status(400).json({ success: false, message: 'userId and products are required.' });
