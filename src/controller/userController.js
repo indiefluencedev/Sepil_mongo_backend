@@ -81,6 +81,7 @@ const loginUser = async (req, res) => {
             res.status(200).json({
                 message: 'This Will Be Your Admin!',
                 user: {
+                    id:user._id.toString(),
                     name: user.name,
                     role: 'admin',
                     email:user.email,
@@ -92,13 +93,15 @@ const loginUser = async (req, res) => {
             res.status(200).json({
                 message: 'This Will Be Your User Dashboard!',
                 user: {
+                    id:user._id.toString(),
                     name: user.name,
                     role: 'user',
                     email:user.email,
-                    phone: user.phone,
+                    phone: user.phone, 
                     address:user.address
                 },
             });
+            console.log(user)
         }
     } catch (error) {
         res.status(500).json({ message: 'An error occurred', error });
