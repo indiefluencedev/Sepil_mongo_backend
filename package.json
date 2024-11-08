@@ -14,7 +14,7 @@
     "nodemon": "^3.1.7"
   },
   "scripts": {
-    "start": "node server.js",
+   "start": "node --max_old_space_size=512 server.js",
     "dev": "nodemon server.js",
     "build": "npm run build"
   }
