@@ -15,6 +15,11 @@ if (!fs.existsSync(uploadDir)) {
 }
 
 dotenv.config(); 
+setInterval(() => {
+  const memoryUsage = process.memoryUsage();
+  console.log(`Memory Usage: RSS=${memoryUsage.rss} heapTotal=${memoryUsage.heapTotal} heapUsed=${memoryUsage.heapUsed}`);
+}, 10000);
+
 
 // Middleware
 app.use(express.json());
