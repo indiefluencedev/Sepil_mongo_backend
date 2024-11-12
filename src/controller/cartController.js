@@ -29,7 +29,6 @@ const addToCart = async (req, res) => {
           }))
         });
       }
-  
       await cart.save();
       res.status(200).json({ success: true, message: 'Product(s) added to cart', cart });
     } catch (error) {
